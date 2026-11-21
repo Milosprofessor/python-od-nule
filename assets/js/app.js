@@ -4511,6 +4511,66 @@ function initHeroDemoEditor() {
   }
 }
 
+// ============================================================================
+// MOBILNI TABOVI U RADIONICI (Samo za telefone i tablete <= 900px)
+// ============================================================================
+function setMobileWorkshopTab(tabName) {
+  const workshopEl = document.getElementById('view-workshop');
+  const btns = document.querySelectorAll('#mobile-workshop-tabs .mwt-btn');
+  if (!workshopEl) return;
+
+  workshopEl.classList.remove('mobile-tab-theory', 'mobile-tab-editor', 'mobile-tab-lessons');
+  workshopEl.classList.add(`mobile-tab-${tabName}`);
+
+  btns.forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-mtab') === tabName);
+  });
+
+  if (tabName === 'editor' && typeof editor !== 'undefined' && editor) {
+    setTimeout(() => editor.refresh(), 40);
+  }
+
+  // Na telefonu skroluj početak tab-trake u fokus da korisnik dobije pun ekran za rad
+  if (window.innerWidth <= 900) {
+    const tabBar = document.getElementById('mobile-workshop-tabs');
+    if (tabBar) {
+      const rect = tabBar.getBoundingClientRect();
+      if (rect.top < 0 || rect.top > 180) {
+        tabBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+}
+
+function initMobileWorkshopTabs() {
+  const tabBar = document.getElementById('mobile-workshop-tabs');
+  if (!tabBar) return;
+
+  tabBar.querySelectorAll('.mwt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setMobileWorkshopTab(btn.getAttribute('data-mtab') || 'theory');
+    });
+  });
+
+  // Automatski prebaci na "Lekcija" kad se klikne lekcija iz spiska na telefonu
+  const lessonList = document.getElementById('lesson-list');
+  if (lessonList) {
+    lessonList.addEventListener('click', (e) => {
+      if (window.innerWidth <= 900 && e.target.closest('.lesson-item')) {
+        setMobileWorkshopTab('theory');
+      }
+    });
+  }
+
+  // Automatski prebaci na "Kod & Terminal" kad se na telefonu klikne "Isprobaj u editoru" ili "Ubaci u editor"
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth > 900) return;
+    if (e.target.closest('.try-example-btn') || e.target.closest('#btn-load-chal') || e.target.closest('#sandbox-toggle-btn')) {
+      setMobileWorkshopTab('editor');
+    }
+  });
+}
+
 // Pokreni aplikaciju kad se učita DOM
 document.addEventListener('DOMContentLoaded', () => {
   // Proveri sačuvan izbor kursa
@@ -4526,6 +4586,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSavedDraftsFromStorage();
   initEditor();
   initHeroDemoEditor();
+  initMobileWorkshopTabs();
   initFontSize();
   initCheatSheet();
   initPanelsResizers();

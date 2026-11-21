@@ -772,7 +772,14 @@
 
 
   <!-- Glavni radni prostor (Radionica) -->
-  <div id="view-workshop" class="app-layout view-panel">
+  <div id="view-workshop" class="app-layout view-panel mobile-tab-theory">
+
+    <!-- Kompaktna mobilna traka za prebacivanje panela (vidljiva samo na ekranima <= 900px) -->
+    <div class="mobile-workshop-tabs" id="mobile-workshop-tabs" role="tablist" aria-label="Prikaz radionice na telefonu">
+      <button type="button" class="mwt-btn active" data-mtab="theory">📖 Lekcija</button>
+      <button type="button" class="mwt-btn" data-mtab="editor">💻 Kod &amp; Terminal</button>
+      <button type="button" class="mwt-btn" data-mtab="lessons">📋 Lekcije</button>
+    </div>
     
     <!-- Bočni meni sa lekcijama -->
     <aside class="sidebar">

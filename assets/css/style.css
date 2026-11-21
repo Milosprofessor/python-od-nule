@@ -4952,11 +4952,46 @@ body.light-theme .course-project-box strong {
 
 /* Kompaktan jednolinijski padajući meni kursa u zaglavlju */
 .course-dropdown {
-  max-width: 260px;
+  max-width: 215px;
   height: 36px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+@media (max-width: 1560px) and (min-width: 901px) {
+  .app-header {
+    padding: 0.55rem 0.75rem;
+    gap: 6px;
+  }
+  .brand-text p,
+  .course-selector-container .course-label {
+    display: none;
+  }
+  .brand-text h1 {
+    font-size: 1.05rem;
+    white-space: nowrap;
+  }
+  .nav-tab-btn {
+    padding: 6px 9px;
+    font-size: 0.8rem;
+  }
+  .course-dropdown {
+    max-width: 165px;
+    font-size: 0.8rem;
+  }
+  .progress-widget {
+    min-width: 135px;
+    max-width: 155px;
+  }
+  .header-actions {
+    gap: 5px;
+  }
+  .header-actions .btn,
+  .profile-header-btn,
+  .header-user-stats .stat-pill {
+    padding: 5px 8px;
+    font-size: 0.78rem;
+  }
 }
 
 /* 22.7 Responzivnost: Tablet (<= 1024px) & Mobilni (<= 768px, 390px, 360px) */
@@ -5093,5 +5128,228 @@ body.light-theme .course-project-box strong {
   }
   .header-user-stats {
     display: none;
+  }
+}
+
+/* ================= 23. MOBILNA RADIONICA & ODMRZAVANJE ZAGLAVLJA (<= 900px) ================= */
+
+/* Na desktopu je mobilna tab-traka potpuno skrivena */
+.mobile-workshop-tabs {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  /* 1. ODMRZNI ZAGLAVLJE: nikada ne ostaje zalepljeno preko pola ekrana dok skroluješ! */
+  .app-header {
+    position: static !important;
+    top: auto !important;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+  }
+
+  /* Kompaktan header na telefonu: sakrij sporedne widgete koji su pravili 3-4 reda */
+  body.view-workshop-active .progress-widget,
+  body.view-workshop-active .header-user-stats,
+  body.view-workshop-active #sandbox-toggle-btn {
+    display: none !important;
+  }
+  .course-selector-container {
+    width: 100%;
+    order: 4;
+    padding: 4px 8px;
+  }
+  .course-selector-container .course-label {
+    display: none;
+  }
+  .course-dropdown {
+    width: 100%;
+    max-width: 100% !important;
+    font-size: 0.82rem;
+    height: 36px;
+  }
+
+  /* 2. ODMRZNI SKROL CELE RADIONICE NA TELEFONU (overflow: visible omogućava sticky tabove!) */
+  html {
+    overflow-x: clip !important;
+  }
+  body.view-workshop-active {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 100vh;
+    overflow: visible !important;
+    overflow-x: clip !important;
+  }
+  body.view-workshop-active #view-workshop {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: calc(100vh - 60px);
+    overflow: visible !important;
+  }
+
+  /* 3. TANKA STICKY TAB-TRAKA RADIONICE (42px) — jedina stvar na vrhu dok učiš */
+  .mobile-workshop-tabs {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 45;
+    gap: 6px;
+    padding: 6px 10px;
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+    width: 100%;
+  }
+  .mwt-btn {
+    flex: 1;
+    padding: 8px 6px;
+    border-radius: 8px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: rgba(30, 41, 59, 0.8);
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+    min-height: 38px;
+  }
+  .mwt-btn.active {
+    background: #0284c7;
+    border-color: #38bdf8;
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35);
+  }
+
+  /* Svetla tema za mobilne tabove */
+  body.light-theme .mobile-workshop-tabs {
+    background: rgba(255, 255, 255, 0.97);
+    border-bottom: 1px solid #cbd5e1;
+  }
+  body.light-theme .mwt-btn {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #334155;
+  }
+  body.light-theme .mwt-btn.active {
+    background: #0284c7;
+    border-color: #0284c7;
+    color: #ffffff;
+  }
+
+  /* 4. PUNI EKRAN ZA AKTIVNI TAB (Teorija / Editor / Spisak lekcija) */
+  #view-workshop .workspace {
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: visible !important;
+    width: 100%;
+  }
+  #view-workshop .vertical-resizer,
+  #view-workshop .horizontal-resizer {
+    display: none !important;
+  }
+  #view-workshop .sidebar,
+  #view-workshop .theory-panel,
+  #view-workshop .editor-panel {
+    display: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border-right: none !important;
+  }
+
+  /* Tab: Lekcija (puna širina + prirodno skrolovanje bez kutije od 550px) */
+  #view-workshop.mobile-tab-theory .theory-panel {
+    display: block !important;
+    padding: 16px 14px 40px !important;
+    border-bottom: none !important;
+  }
+
+  /* Tab: Kod & Terminal (pun prostor za kucanje i izlaz!) */
+  #view-workshop.mobile-tab-editor .editor-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: calc(100vh - 54px) !important;
+  }
+  #view-workshop.mobile-tab-editor .editor-wrapper {
+    min-height: 310px !important;
+    height: 46vh !important;
+    flex: 1 0 auto !important;
+  }
+  #view-workshop.mobile-tab-editor .editor-wrapper .CodeMirror {
+    height: 100% !important;
+    min-height: 310px !important;
+  }
+  #view-workshop.mobile-tab-editor .terminal-wrapper {
+    height: auto !important;
+    min-height: 200px !important;
+    flex: 1 0 auto !important;
+  }
+  #view-workshop.mobile-tab-editor #focus-mode-btn,
+  #view-workshop.mobile-tab-editor .editor-label,
+  #view-workshop.mobile-tab-editor #run-code-btn small {
+    display: none !important;
+  }
+  #view-workshop.mobile-tab-editor .editor-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 8px 10px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  #view-workshop.mobile-tab-editor .toolbar-left,
+  #view-workshop.mobile-tab-editor .toolbar-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    max-width: 100%;
+  }
+  #view-workshop.mobile-tab-editor .toolbar-left {
+    justify-content: space-between;
+  }
+  #view-workshop.mobile-tab-editor .toolbar-right {
+    justify-content: flex-start;
+  }
+  #view-workshop.mobile-tab-editor #run-code-btn {
+    order: -1;
+    width: 100%;
+    min-height: 40px;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+  #view-workshop.mobile-tab-editor .toolbar-right .btn-ghost {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 6px 6px;
+    font-size: 0.76rem;
+  }
+
+  /* Tab: Spisak lekcija (puna visina, bez skučenih 180px!) */
+  #view-workshop.mobile-tab-lessons .sidebar {
+    display: block !important;
+    padding-bottom: 32px !important;
+  }
+  #view-workshop.mobile-tab-lessons .lesson-list {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Lepše poravnanje dugmadi na dnu lekcije na telefonu */
+  .lesson-footer-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lesson-footer-nav .btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
   }
 }
