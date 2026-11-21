@@ -1308,6 +1308,7 @@ function renderLessonVideo(lesson) {
     `;
   } else {
     const posterAttr = lesson.videoPoster ? `poster="${lesson.videoPoster}"` : '';
+    const posterImg = lesson.videoPoster ? `<img src="${lesson.videoPoster}" alt="${escapeHTML(lesson.title)}" style="width:100%; border-radius:10px; display:block; margin-bottom:10px; border:1px solid rgba(148,163,184,0.3);">` : '';
     container.innerHTML = `
       <div class="lesson-video-responsive">
         <video controls preload="metadata" ${posterAttr}>
@@ -1316,6 +1317,22 @@ function renderLessonVideo(lesson) {
         </video>
       </div>
     `;
+    const vidSrc = container.querySelector('source');
+    if (vidSrc) {
+      vidSrc.addEventListener('error', () => {
+        container.innerHTML = `
+          <div style="padding:14px; text-align:center;">
+            ${posterImg}
+            <div style="font-size:0.9rem; font-weight:600; color:var(--accent-python);">
+              🎬 Video lekcija se uskoro objavljuje na našem YouTube kanalu!
+            </div>
+            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">
+              U međuvremenu slobodno isprobaj interaktivne primere, 4 zadatka i kviz direktno u radionici ispod.
+            </div>
+          </div>
+        `;
+      });
+    }
   }
 
   toggleBtn.onclick = () => {
