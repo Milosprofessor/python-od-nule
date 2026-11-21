@@ -4379,6 +4379,138 @@ function bindEvents() {
   });
 }
 
+// ============================================================================
+// INTERAKTIVNA PYTHON DEMONSTRACIJA U HERO SEKCIJI (Pravi Skulpt + CodeMirror)
+// ============================================================================
+function initHeroDemoEditor() {
+  const textarea = document.getElementById('hero-demo-editor');
+  const runBtn = document.getElementById('hero-demo-run');
+  const resetBtn = document.getElementById('hero-demo-reset');
+  const openFullBtn = document.getElementById('hero-demo-open-workshop');
+  const outputEl = document.getElementById('hero-demo-output');
+  const presetBtns = document.querySelectorAll('.hero-preset-btn');
+  if (!textarea || !runBtn || !outputEl) return;
+
+  const PRESETS = {
+    pozdrav: `# Promeni ime i klikni "▶ Pokreni"!\nime = "Python početniče"\nprint(f"Zdravo, {ime}! 🐍")\nprint("Tvoj prvi pravi Python kod radi!")`,
+    petlja: `# Odbrojavanje pomoću for petlje 🚀\nfor broj in range(3, 0, -1):\n    print(f"Lansiranje za {broj}...")\nprint("🚀 Polećemo u svet programiranja!")`,
+    kalkulator: `# Mini kalkulator godišnje uštede 💰\ndnevno = 250\ngodisnje = dnevno * 365\nprint(f"Uz {dnevno} RSD dnevno:")\nprint(f"Za godinu dana imaš {godisnje} RSD!")`
+  };
+
+  let activePreset = 'pozdrav';
+  let heroCm = null;
+
+  if (typeof CodeMirror !== 'undefined') {
+    heroCm = CodeMirror.fromTextArea(textarea, {
+      mode: 'python',
+      theme: 'dracula',
+      lineNumbers: true,
+      indentUnit: 4,
+      tabSize: 4,
+      lineWrapping: true,
+      extraKeys: {
+        'Ctrl-Enter': () => runHeroPython(),
+        'Cmd-Enter': () => runHeroPython()
+      }
+    });
+    heroCm.setValue(PRESETS[activePreset]);
+  } else {
+    textarea.value = PRESETS[activePreset];
+  }
+
+  function getHeroCode() {
+    return heroCm ? heroCm.getValue() : textarea.value;
+  }
+
+  function setHeroCode(code) {
+    if (heroCm) {
+      heroCm.setValue(code);
+      setTimeout(() => heroCm.refresh(), 20);
+    } else {
+      textarea.value = code;
+    }
+  }
+
+  function runHeroPython() {
+    const code = getHeroCode().trim();
+    if (!code) {
+      outputEl.className = 'hero-console-output is-error';
+      outputEl.textContent = 'Editor je prazan — upiši npr. print("Zdravo!") i pokreni ponovo.';
+      return;
+    }
+    if (typeof Sk === 'undefined') {
+      outputEl.className = 'hero-console-output is-error';
+      outputEl.textContent = 'Python okruženje se još učitava, pokušaj ponovo za trenutak.';
+      return;
+    }
+
+    let outBuf = '';
+    outputEl.className = 'hero-console-output';
+    outputEl.textContent = 'Izvršavam Python...';
+    runBtn.disabled = true;
+
+    Sk.configure({
+      output: (txt) => { outBuf += txt; },
+      read: builtinRead,
+      nonreadopen: true,
+      filewrite: () => {},
+      inputfun: () => 'Polaznik',
+      inputfunTakesPrompt: true,
+      __future__: Sk.python3
+    });
+    Sk.execLimit = 2500;
+
+    Sk.misceval.asyncToPromise(() => Sk.importMainWithBody('<hero_demo>', false, code, true))
+      .then(() => {
+        outputEl.className = 'hero-console-output is-success';
+        outputEl.textContent = outBuf.trim() ? outBuf : '[Kod je prošao bez greške, bez ispisa]';
+      })
+      .catch((err) => {
+        outputEl.className = 'hero-console-output is-error';
+        const raw = err.toString();
+        const friendly = (typeof translateError === 'function') ? translateError(raw) : '';
+        outputEl.textContent = friendly ? `${raw}\n💡 ${friendly}` : raw;
+      })
+      .finally(() => {
+        runBtn.disabled = false;
+      });
+  }
+
+  runBtn.addEventListener('click', runHeroPython);
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      setHeroCode(PRESETS[activePreset]);
+      outputEl.className = 'hero-console-output';
+      outputEl.textContent = 'Primer je vraćen — klikni „▶ Pokreni”!';
+    });
+  }
+
+  if (openFullBtn) {
+    openFullBtn.addEventListener('click', () => {
+      switchView('workshop');
+    });
+  }
+
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-preset');
+      if (!PRESETS[key]) return;
+      activePreset = key;
+      presetBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setHeroCode(PRESETS[key]);
+      runHeroPython();
+    });
+  });
+
+  // Osveži CodeMirror kada se vrati na početnu stranu
+  const navHome = document.getElementById('nav-btn-home');
+  if (navHome && heroCm) {
+    navHome.addEventListener('click', () => setTimeout(() => heroCm.refresh(), 60));
+  }
+}
+
 // Pokreni aplikaciju kad se učita DOM
 document.addEventListener('DOMContentLoaded', () => {
   // Proveri sačuvan izbor kursa
@@ -4391,8 +4523,9 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.courseSelect.value = currentCourseIndex.toString();
   }
 
-    loadSavedDraftsFromStorage();
+  loadSavedDraftsFromStorage();
   initEditor();
+  initHeroDemoEditor();
   initFontSize();
   initCheatSheet();
   initPanelsResizers();
