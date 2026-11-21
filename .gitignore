@@ -1,0 +1,25 @@
+# ==========================================================
+# Python Od Nule — .gitignore (Đorđe Kostić, Git & Release Lead)
+# ==========================================================
+
+# Veliki binarni video fajlovi (hostuju se lokalno ili na YouTube/R2, ne u Git istoriji)
+video_lekcije/*.mp4
+
+# Python keš i virtuelna okruženja
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Logovi, privremeni i OS fajlovi
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# IDE podešavanja (opciono)
+.vscode/
+.idea/

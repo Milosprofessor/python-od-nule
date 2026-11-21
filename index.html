@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Od Nule | Nauči programiranje lako i zanimljivo</title>
+  
+  <!-- Favicon sa pitonom -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐍</text></svg>">
+
+  <!-- CodeMirror CSS -->
+  <link rel="stylesheet" href="assets/vendor/codemirror.min.css">
+  <link rel="stylesheet" href="assets/vendor/dracula.min.css">
+
+  <!-- Glavni stilovi -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Glavno zaglavlje -->
+    <!-- Glavno zaglavlje sa navigacijom -->
+  <header class="app-header">
+    <div class="brand" id="brand-home-btn" style="cursor: pointer;" title="Idi na Početnu stranu">
+      <span class="brand-logo">🐍</span>
+      <div class="brand-text">
+        <h1>Python Od Nule</h1>
+        <p>Trijada Osnova Programiranja</p>
+      </div>
+    </div>
+
+    <!-- Glavna navigacija između Početne i Radionice -->
+    <nav class="main-nav-tabs">
+      <button id="nav-btn-home" class="nav-tab-btn active">🏠 Početna</button>
+      <button id="nav-btn-workshop" class="nav-tab-btn">💻 Radionica</button>
+      <button id="nav-btn-cheatsheet" class="nav-tab-btn">📖 Podsetnik</button>
+      <button id="nav-btn-profile" class="nav-tab-btn">👤 Profil</button>
+    </nav>
+
+    <!-- Izbor kursa -->
+    <div class="course-selector-container" id="header-course-selector">
+      <span class="course-label">Kurs:</span>
+      <select id="course-select" class="course-dropdown" title="Izaberi nivo i kurs">
+        <option value="0">🌱 1. Python Osnove 1 (Prvi koraci - Početni)</option>
+        <option value="1">🛠️ 2. Python Osnove 2 (Praktičar & Mini-Projekti - Srednji)</option>
+        <option value="2">🎓 3. Python Osnove 3 (Master nivo osnova - Napredni)</option>
+        <option value="3">⚡ 4. Pythonični Alati & Srednji Nivo (Most ka CS101 — 6 lekcija)</option>
+        <option value="4">🏗️ 5. Vođeni Projekti na Računaru (10 Realnih Aplikacija)</option>
+        <option value="5">🚀 6. Računarstvo i Python Inženjerstvo (CS101 Pro — 10 modula)</option>
+      </select>
+    </div>
+
+    <div class="header-actions">
+      <!-- Praćenje progresa (trenutni kurs + Trijada celina) -->
+      <div class="progress-widget" title="Tvoj napredak kroz lekcije">
+        <div class="progress-label">
+          <span>Kurs:</span>
+          <span id="progress-text">0 od 9 (0%)</span>
+        </div>
+        <div class="progress-bar-track">
+          <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        </div>
+        <div class="trijada-sub-progress" title="Ukupan napredak kroz svih 27 lekcija Trijade Osnova">
+          <span>🏆 Trijada Osnova:</span> <strong id="trijada-progress-text">0/27 (0%)</strong>
+        </div>
+      </div>
+
+      <!-- Igralište dugme -->
+      <!-- Prekidač svetle/tamne teme -->
+      <button id="theme-toggle-btn" class="btn btn-ghost btn-sm" title="Prebaci Svetlu / Tamnu temu (odlično za učionice i dnevno svetlo)">
+        ☀️
+      </button>
+
+      <button id="sandbox-toggle-btn" class="btn btn-secondary btn-sm" title="Otvori slobodan prostor za vežbanje bez lekcija">
+        🧪 Igralište
+      </button>
+
+      <!-- Gamifikacija: XP poeni i Dnevni niz (Streak) -->
+      <div class="header-user-stats" id="header-user-stats" title="Tvoji poeni i dnevni niz učenja">
+        <span class="stat-pill xp-pill" title="Ukupno sakupljeni XP poeni">⚡ <strong id="header-user-xp">0</strong> XP</span>
+        <span class="stat-pill streak-pill" title="Dnevni niz učenja (Streak)">🔥 <strong id="header-user-streak">1</strong> d</span>
+      </div>
+
+            <!-- Profilno dugme / registracija u zaglavlju -->
+      <button id="header-profile-btn" class="profile-header-btn" title="Moj Profil i Postavke">
+        <span class="profile-avatar-mini">👤</span>
+        <span id="header-profile-name">Profil</span>
+      </button>
+    </div>
+  </header>
+
+    <!-- ========================================================================= -->
+  <!-- POČETNA STRANA / LANDING PAGE (view-landing) -->
+  <!-- ========================================================================= -->
+  <main id="view-landing" class="view-panel active">
+    
+    <!-- 1. HERO SEKCIJA -->
+    <section class="landing-hero">
+      <div class="hero-ambient-glow glow-1"></div>
+      <div class="hero-ambient-glow glow-2"></div>
+      <div class="landing-container hero-content">
+        <div class="hero-badge">
+          <span>✨ Trijada Osnova Pythona</span>
+          <span class="badge-dot">•</span>
+          <span>27 Lekcija</span>
+          <span class="badge-dot">•</span>
+          <span>27 Mini-Projekata</span>
+          <span class="badge-dot">•</span>
+          <span>Za Uzrast 11 do 50+ god</span>
+        </div>
+        
+        <h1 class="hero-title">
+          Programiranje nije magija za genije.<br>
+          <span class="gradient-text">To je veština koju svako može da nauči.</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+          Zaboravi suve definicije i strah od grešaka. Naša platforma te kroz slikovite analogije, interaktivnu vežbaonicu u brauzeru i rad na tvom pravom računaru vodi korak po korak — od prve komande <code>print("Zdravo")</code> do pravog Tamagotchi virtuelnog ljubimca sa bazom na disku!
+        </p>
+
+        <div class="hero-cta-group">
+          <button id="hero-start-btn" class="btn btn-primary btn-lg" title="Započni prvi kurs odmah">
+            🚀 Kreni Besplatno (Kurs 1)
+          </button>
+          <a href="#sekcija-kursevi" class="btn btn-secondary btn-lg" id="hero-explore-btn">
+            📚 Istraži Kurseve
+          </a>
+          <a href="#sekcija-profil" class="btn btn-ghost btn-lg" id="hero-profile-link">
+            👤 Napravi Profil Učenika
+          </a>
+        </div>
+
+        <!-- Traka sa brzim statistikama -->
+        <div class="hero-stats-strip">
+          <div class="stat-pill">
+            <span class="stat-icon">🌱</span>
+            <div>
+              <strong>3 Nivoa Trijade</strong>
+              <small>Početni, Srednji i Master</small>
+            </div>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-icon">🛠️</span>
+            <div>
+              <strong>27 Projekata</strong>
+              <small>Igrice, kalkulatori, fajlovi</small>
+            </div>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-icon">💻</span>
+            <div>
+              <strong>IDLE & VS Code</strong>
+              <small>Učimo te radu na pravom PC-u</small>
+            </div>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-icon">🎓</span>
+            <div>
+              <strong>100% Besplatno</strong>
+              <small>Direktno u tvom pretraživaču</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ZAŠTO PYTHON OD NULE & FILOZOFIJA -->
+    <section class="landing-section" id="sekcija-o-platformi">
+      <div class="landing-container">
+        <div class="section-header">
+          <span class="section-tag">💡 NAŠA FILOZOFIJA</span>
+          <h2>Zašto je „Python Od Nule” drugačiji od drugih?</h2>
+          <p>Većina kurseva programiranja pretpostavlja da već sve znaš ili te zatrpava matematičkim žargonom. Mi smo platformu izgradili oko četiri inženjersko-pedagoška stuba:</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: rgba(34, 197, 94, 0.15); color: #4ade80;">
+              <span>🚫</span>
+            </div>
+            <h3>Nulta Barijera za Početak</h3>
+            <p>Nema instalacija, podešavanja servera, komplikovanih terminala i nervoze prvog dana. Uđeš na sajt, napišeš kod i odmah vidiš rezultat u konzoli!</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">
+              <span>🧠</span>
+            </div>
+            <h3>Slikoviti Mentalni Modeli</h3>
+            <p>Promenljive su kutije sa etiketom, RAM memorija je radni sto, hard disk je polica, a if-else uslovi su semafori. Gradimo intuiciju, a ne puko bubanje koda.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
+              <span>🛡️</span>
+            </div>
+            <h3>Učenje Bez Straha od Grešaka</h3>
+            <p>Crveni ekran nije kazna. Naš pametni mentor na srpskom jeziku ti tačno objašnjava: <em>"Nedostaje dvotačka na kraju reda"</em> i uči te da razmišljaš kao inženjer.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+              <span>🖥️</span>
+            </div>
+            <h3>Most do Pravog Računara</h3>
+            <p>Ne ostajemo zauvek u pretraživaču. U trećem kursu učiš kako da instaliraš Python, koristiš IDLE i VS Code i pokrećeš svoje .py fajlove na računaru!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TRIJADA OSNOVA (DETALJNI PREGLED SVA 3 KURSA) -->
+    <section class="landing-section bg-alt" id="sekcija-kursevi">
+      <div class="landing-container">
+        <div class="section-header">
+          <span class="section-tag">📚 TRIJADA OSNOVA</span>
+          <h2>Tri stepenika do potpune programerske samostalnosti</h2>
+          <p>Pažljivo osmišljen put učenja: od prve linije teksta, preko mini-projekata u praksi, do rada sa trajnim fajlovima i algoritmima.</p>
+        </div>
+
+        <!-- Ulazni Test (Placement Test) CTA -->
+        <div class="placement-cta-bar">
+          <div class="placement-cta-text">
+            <span class="placement-icon">🧭</span>
+            <div>
+              <strong>Nisi siguran od kog kursa da kreneš?</strong>
+              <p>Uradi detaljni dijagnostički <strong>Ulazni test (18 pitanja — po 6 iz svakog kursa)</strong> i dobij preciznu analizu znanja po nivoima!</p>
+            </div>
+          </div>
+          <button id="btn-open-placement-test" class="btn btn-exam" type="button">
+            🧭 Uradi Ulazni Test (18 pitanja)
+          </button>
+        </div>
+
+                <div class="courses-showcase-grid">
+          <!-- KURS 1 -->
+          <div class="course-showcase-card card-k1">
+            <div class="course-card-top">
+              <span class="course-level-badge badge-k1">🌱 NIVO 1: POČETNI</span>
+              <span class="course-icon-large">🌱</span>
+            </div>
+            <h3>1. Python Osnove 1 (Prvi Koraci)</h3>
+            <p class="course-lead-desc">Upoznaj čudesni svet programiranja od apsolutne nule. Nema preduslova, samo tvoja radoznalost!</p>
+            
+            <div class="course-highlights">
+              <strong>Šta najbolje donosi i čemu služi:</strong>
+              <ul>
+                <li>Razbija strah od programiranja kroz igru i analogije</li>
+                <li>Štampanje teksta, promenljive (kutije) i osnovna matematika</li>
+                <li>Razgovor sa korisnikom (<code>input</code>) i donošenje odluka (<code>if-else</code>)</li>
+                <li>Petlje za ponavljanje (<code>for</code> i <code>while</code>) i liste stavki</li>
+              </ul>
+            </div>
+
+            <div class="course-project-box">
+              <span class="project-tag">🏆 Glavni Projekat:</span>
+              <strong>Igra "Pogodi Tajni Broj"</strong>
+              <small>Pravi računar bira slučajan broj a ti pogađaš uz pametne nagoveštaje.</small>
+            </div>
+
+            <div class="landing-course-prog-box" id="landing-course-prog-0">
+              <div class="landing-prog-bar-track"><div class="landing-prog-bar-fill" id="landing-fill-0" style="width: 0%;"></div></div>
+              <div class="landing-prog-info"><span id="landing-text-0">0 od 9 završeno (0%)</span></div>
+            </div>
+            <button class="btn btn-primary btn-block btn-start-course" data-course-idx="0">
+              Započni Kurs 1 (Prvi koraci) ▶
+            </button>
+          </div>
+
+          <!-- KURS 2 -->
+          <div class="course-showcase-card card-k2 featured-course">
+            <div class="featured-ribbon">⭐ NAJVIŠE PRAKSE</div>
+            <div class="course-card-top">
+              <span class="course-level-badge badge-k2">🛠️ NIVO 2: SREDNJI</span>
+              <span class="course-icon-large">🛠️</span>
+            </div>
+            <h3>2. Python Osnove 2 (Praktičar & Projekti)</h3>
+            <p class="course-lead-desc">Pretvori teoriju u mišićnu memoriju! Svaka pojedinačna lekcija sadrži mini-projekat koji samostalno stvaraš.</p>
+            
+            <div class="course-highlights">
+              <strong>Šta najbolje donosi i čemu služi:</strong>
+              <ul>
+                <li>Formatiranje teksta u kolone i tabele (kao u Excelu)</li>
+                <li>Rečnici (baze podataka za profile, cene i inventare)</li>
+                <li>Pisanje sopstvenih funkcija kao Lego kockica (<code>def</code> i <code>return</code>)</li>
+                <li>Neuništivi meniji uz kontrolu petlji (<code>break</code> i <code>continue</code>)</li>
+              </ul>
+            </div>
+
+            <div class="course-project-box">
+              <span class="project-tag">🏆 Glavni Projekat:</span>
+              <strong>Simulator Bankomata (ATM) & Kviz Šampion</strong>
+              <small>Uplata, isplata, provera stanja i interaktivni kviz znanja sa novčanim nagradama!</small>
+            </div>
+
+            <div class="landing-course-prog-box" id="landing-course-prog-1">
+              <div class="landing-prog-bar-track"><div class="landing-prog-bar-fill" id="landing-fill-1" style="width: 0%;"></div></div>
+              <div class="landing-prog-info"><span id="landing-text-1">0 od 9 završeno (0%)</span></div>
+            </div>
+            <button class="btn btn-primary btn-block btn-start-course" data-course-idx="1">
+              Započni Kurs 2 (Praktičar) ▶
+            </button>
+          </div>
+
+          <!-- KURS 3 -->
+          <div class="course-showcase-card card-k3">
+            <div class="course-card-top">
+              <span class="course-level-badge badge-k3">🎓 NIVO 3: MASTER</span>
+              <span class="course-icon-large">🎓</span>
+            </div>
+            <h3>3. Python Osnove 3 (Master Nivo Osnova)</h3>
+            <p class="course-lead-desc">Izađi iz brauzera i postani pravi softverski inženjer koji kodira na svom računaru u IDLE-u i VS Code-u!</p>
+            
+            <div class="course-highlights">
+              <strong>Šta najbolje donosi i čemu služi:</strong>
+              <ul>
+                <li>Instalacija Pythona, PATH promenljiva i prečice u VS Code-u</li>
+                <li>Defanzivno programiranje: programi koji nikada ne pucaju (<code>try-except</code>)</li>
+                <li>Trajno čuvanje na hard disku uz <code>with open(..., encoding="utf-8")</code></li>
+                <li>2D matrice (šahovska tabla), moduli <code>random</code>, <code>time</code>, <code>math</code> i binarna pretraga</li>
+              </ul>
+            </div>
+
+            <div class="course-project-box">
+              <span class="project-tag">🏆 Diplomski Projekat:</span>
+              <strong>Tamagotchi Master sa Diplomom</strong>
+              <small>Virtuelni ljubimac koji živi u fajlu na disku i svečana diploma o savladanim osnovama.</small>
+            </div>
+
+            <div class="landing-course-prog-box" id="landing-course-prog-2">
+              <div class="landing-prog-bar-track"><div class="landing-prog-bar-fill" id="landing-fill-2" style="width: 0%;"></div></div>
+              <div class="landing-prog-info"><span id="landing-text-2">0 od 9 završeno (0%)</span></div>
+            </div>
+            <button class="btn btn-primary btn-block btn-start-course" data-course-idx="2">
+              Započni Kurs 3 (Master nivo) ▶
+            </button>
+          </div>
+        </div>
+
+        <!-- PRO AKADEMIJA: KURS 4 (MOST KA CS101) & KURS 5 (CS101 PRO) -->
+        <div class="pro-academy-wrapper">
+          <div class="pro-academy-header">
+            <span class="section-tag pro-tag">🚀 PRO AKADEMIJA • SREDNJI &amp; UNIVERZITETSKI NIVO</span>
+            <h3>Spremni za sledeći skok? Pythonični Most + CS101 Pro!</h3>
+            <p>Savršeno stepenovan prelazak iz Trijade Osnova u ozbiljno softversko inženjerstvo: prvo ovladaj Pythoničkim alatima u 6 fokusiranih lekcija, a zatim osvoji 10-modulni CS101 Pro program!</p>
+          </div>
+
+          <!-- KURS 4: PYTHONIČNI MOST (6 LEKCIJA) -->
+          <div class="course-showcase-card card-bridge pro-academy-card bridge-course-card">
+            <div class="pro-card-left">
+              <div class="course-card-top">
+                <span class="course-level-badge badge-bridge">⚡ NIVO 4: MOST KA CS101 (6 LEKCIJA)</span>
+                <span class="course-icon-large">⚡</span>
+              </div>
+              <h3>4. Pythonični Alati &amp; Srednji Nivo (Most ka CS101)</h3>
+              <p class="course-lead-desc">Idealna priprema između Kursa 3 i CS101 Pro! U 6 intenzivnih lekcija (24 zadatka + 24 unit testa) savladaj čist, moderan Python stil koji koriste profesionalci.</p>
+
+              <div class="pro-modules-pills bridge-pills">
+                <span>01 Slicing &amp; join/split</span>
+                <span>02 Torke &amp; Skupovi</span>
+                <span>03 Comprehensions</span>
+                <span>04 lambda, any, all, zip</span>
+                <span>05 Moduli, pip &amp; venv</span>
+                <span>06 Analizator Teksta</span>
+              </div>
+            </div>
+
+            <div class="pro-card-right">
+              <div class="course-project-box">
+                <span class="project-tag">🏆 Završni Projekat Mosta:</span>
+                <strong>Analizator Podataka iz Teksta</strong>
+                <small>Spajanje slicing-a, skupova, comprehensions-a i lambda rangiranja u jedan alat.</small>
+              </div>
+
+              <div class="landing-course-prog-box" id="landing-course-prog-3">
+                <div class="landing-prog-bar-track"><div class="landing-prog-bar-fill" id="landing-fill-3" style="width: 0%;"></div></div>
+                <div class="landing-prog-info"><span id="landing-text-3">0 od 6 završeno (0%)</span></div>
+              </div>
+              <button class="btn btn-primary btn-block btn-start-course btn-bridge-start" data-course-idx="3">
+                Započni Kurs 4 (Pythonični Most) ⚡
+              </button>
+            </div>
+          </div>
+
+          <!-- KURS 5: VOĐENI PROJEKTI NA RAČUNARU (10 REALNIH APLIKACIJA) -->
+          <div class="course-showcase-card card-projects pro-academy-card projects-course-card" style="margin-top: 1.75rem;">
+            <div class="pro-card-left">
+              <div class="course-card-top">
+                <span class="course-level-badge badge-projects">🏗️ NIVO 5: VOĐENI PROJEKTI NA PC-U (10 APLIKACIJA)</span>
+                <span class="course-icon-large">🏗️</span>
+              </div>
+              <h3>5. Vođeni Projekti na Računaru (10 Realnih Aplikacija)</h3>
+              <p class="course-lead-desc">Pravi praktični trening pre CS101 Pro! Gradiš 10 ozbiljnih, sve složenijih aplikacija korak po korak (40 vođenih koraka + 40 automatskih <code>assert</code> testova) spremnih za VS Code i GitHub portfolio.</p>
+
+              <div class="pro-modules-pills projects-pills">
+                <span>01 Revizor Lozinki</span>
+                <span>02 Budžet CSV</span>
+                <span>03 Pametni Imenik</span>
+                <span>04 Flashcards AI</span>
+                <span>05 DevOps Log Radar</span>
+                <span>06 Kasa &amp; Lager</span>
+                <span>07 Vešala Turnir</span>
+                <span>08 Vižener Kripto</span>
+                <span>09 Mini-Trello Kanban</span>
+                <span>10 Sportska Liga JSON</span>
+              </div>
+            </div>
+
+            <div class="pro-card-right">
+              <div class="course-project-box">
+                <span class="project-tag">🏆 Kapitalni Projekat #10:</span>
+                <strong>Simulator Sportske Lige &amp; Turnira (JSON)</strong>
+                <small>Round-Robin parovi, 3/1/0 bodovanje, višeslojno tie-breaker sortiranje i JSON izveštaj.</small>
+              </div>
+
+              <div class="landing-course-prog-box" id="landing-course-prog-4">
+                <div class="landing-prog-bar-track"><div class="landing-prog-bar-fill" id="landing-fill-4" style="width: 0%;"></div></div>
+                <div class="landing-prog-info"><span id="landing-text-4">0 od 10 završeno (0%)</span></div>
+              </div>
+              <button class="btn btn-primary btn-block btn-start-course btn-projects-start" data-course-idx="4">
+                Započni Kurs 5 (Vođeni Projekti) 🏗️
+              </button>
+            </div>
+          </div>
+
+          <!-- KURS 6: CS101 PRO (10 MODULA) -->
+          <div class="course-showcase-card card-k4 pro-academy-card" style="margin-top: 1.75rem;">
+            <div class="pro-card-left">
+              <div class="course-card-top">
+                <span class="course-level-badge badge-k4">🚀 NIVO 6: CS101 PRO AKADEMIJA</span>
+                <span class="course-icon-large">🚀</span>
+              </div>
+              <h3>6. Računarstvo i Python Inženjerstvo (CS101 Pro)</h3>
+              <p class="course-lead-desc">Pravi prelazak iz osnovnog kodiranja u ozbiljno softversko inženjerstvo. 10 modula, 10 Full HD video lekcija, 40 zadataka (sa Code Review izazovima), 40 kviz pitanja i automatski <code>assert</code> unit testovi!</p>
+
+              <div class="pro-modules-pills">
+                <span>01 Bitovi &amp; UTF-8</span>
+                <span>02 Big-O &amp; Rekurzija</span>
+                <span>03 Stack, Queue, Set</span>
+                <span>04 OOP Klase</span>
+                <span>05 Nasleđivanje</span>
+                <span>06 Regex (re)</span>
+                <span>07 Unit Testovi &amp; TDD</span>
+                <span>08 JSON, CSV &amp; API</span>
+                <span>09 Baze &amp; SQL</span>
+                <span>10 Mini-Banka Pro</span>
+              </div>
+            </div>
+
+            <div class="pro-card-right">
+              <div class="course-project-box">
+                <span class="project-tag">🏆 Diplomski Inženjerski Projekat:</span>
+                <strong>Mini-Banka Pro (OOP + JSON + Unit Testovi)</strong>
+                <small>Potpuno testirana objektno-orijentisana aplikacija sa validacijom, serijalizacijom stanja i proverom grešaka.</small>
+              </div>
+
+              <div class="landing-course-prog-box" id="landing-course-prog-5">
+                <div class="landing-prog-bar-track"><div class="landing-prog-bar-fill" id="landing-fill-5" style="width: 0%;"></div></div>
+                <div class="landing-prog-info"><span id="landing-text-5">0 od 10 završeno (0%)</span></div>
+              </div>
+              <button class="btn btn-primary btn-block btn-start-course btn-pro-start" data-course-idx="5">
+                Započni Kurs 6 (CS101 Pro) 🚀
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. NAUČNE MOTIVACIONE TEHNIKE ZA BRŽE UČENJE -->
+    <section class="landing-section" id="sekcija-tehnike">
+      <div class="landing-container">
+        <div class="section-header">
+          <span class="section-tag">🧠 TAJNE BRZOG UČENJA</span>
+          <h2>Kako učiti programiranje bez stresa i odustajanja?</h2>
+          <p>Programiranje nije samo kucanje koda — to je veština upravljanja sopstvenom pažnjom i rešavanja problema. Ovi naučni principi garantuju uspeh:</p>
+        </div>
+
+        <div class="techniques-grid">
+          <div class="technique-card">
+            <div class="tech-icon">🦆</div>
+            <h4>Fajnmanova Tehnika & Gumena Patkica</h4>
+            <p>Kada tvoj program zapne, uzmi gumenu patkicu (ili zamisli prijatelja) i naglas joj, liniju po liniju, objasni šta tvoj kod treba da radi. U 80% slučajeva uočićeš sopstvenu grešku dok je izgovaraš naglas!</p>
+          </div>
+
+          <div class="technique-card">
+            <div class="tech-icon">⏱️</div>
+            <h4>Pomodoro Fokus Ritam (25 + 5 Minuta)</h4>
+            <p>Mozak se pregreva nakon 30 minuta intezivnog logičkog naprezanja. Postavi tajmer na 25 minuta potpunog rada bez telefona i društvenih mreža, a zatim napravi 5 minuta pauze da popiješ čašu vode.</p>
+          </div>
+
+          <div class="technique-card">
+            <div class="tech-icon">🚶</div>
+            <h4>Pravilo 20 Minuta i Difuzni Mod Mozga</h4>
+            <p>Ako ne možeš da rešiš bag duže od 20 minuta, prestani besomučno da menjaš kod! Ustani i prošetaj. Mozak u pozadini (difuzni režim) nastavlja da sklapa kockice i rešenje ti često sine samo od sebe.</p>
+          </div>
+
+          <div class="technique-card">
+            <div class="tech-icon">🧭</div>
+            <h4>Greške su Putokazi, a Ne Porazi</h4>
+            <p>Svaki senior programer u Guglu dnevno vidi desetine grešaka. Poruka <code>SyntaxError</code> ne znači da nisi pametan — to je samo kompjuterski GPS koji ti kaže: <em>"Zaboravio si dvotačku u redu 4"</em>. Slavi svaku grešku jer si iz nje nešto naučio!</p>
+          </div>
+
+          <div class="technique-card">
+            <div class="tech-icon">⌨️</div>
+            <h4>Zakon Mišićne Memorije</h4>
+            <p>Čitanje koda očima je kao gledanje nekoga kako vozi skejt — stvara iluziju da znaš, ali kad staneš na dasku, padneš! Uvek samostalno prekucaj primer u naš editor. Prsti pamte sintaksu bolje nego mozak.</p>
+          </div>
+
+          <div class="technique-card">
+            <div class="tech-icon">🧩</div>
+            <h4>Dekompozicija (Podeli pa Vladaj)</h4>
+            <p>Kada pred sobom vidiš veliki projekat kao što je Bankomat ili Iks-Oks, nemoj gledati celinu. Razbij ga na tri bezopasna zalogaja: 1. Pripremi podatke, 2. Napiši petlju menija, 3. Poveži unos i ispis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. REGISTRACIJA & KORISNIČKI PROFIL -->
+    <section class="landing-section bg-alt" id="sekcija-profil">
+      <div class="landing-container">
+        <div class="section-header">
+          <span class="section-tag">👤 TVOJ PROFIL</span>
+          <h2>Kreiraj svoj programerski profil i zabeleži svoju misiju</h2>
+          <p>Prati svoj napredak kroz svih 27 lekcija Trijade, postavi svoj nadimak za diplome i prilagodi učenje svojim ličnim ciljevima.</p>
+        </div>
+
+        <div class="profile-layout-container">
+          
+          <!-- Leva kolona: Prednosti profila -->
+          <div class="profile-benefits-card">
+            <h3>Zašto je dobro imati profil?</h3>
+            <ul class="benefits-list">
+              <li>
+                <span class="b-icon">🏆</span>
+                <div>
+                  <strong>Zvanična diploma sa tvojim imenom</strong>
+                  <p>Kada završiš Tamagotchija i Trijadu Osnova, tvoj nadimak se upisuje u svečanu diplomu majstora Pythona.</p>
+                </div>
+              </li>
+              <li>
+                <span class="b-icon">💾</span>
+                <div>
+                  <strong>Trajno pamćenje progresa</strong>
+                  <p>Tvoji rešeni zadaci, nacrti koda i zvezdice ostaju sačuvani čak i kada ugasiš računar.</p>
+                </div>
+              </li>
+              <li>
+                <span class="b-icon">🎯</span>
+                <div>
+                  <strong>Prilagođeno tvojim godinama i zanimanju</strong>
+                  <p>Bilo da si đak, student, lekar ili građevinski inženjer — tvoj profil te motiviše na pravi način.</p>
+                </div>
+              </li>
+            </ul>
+
+            <div class="data-privacy-note">
+              <span>🔒 <strong>Privatnost na prvom mestu:</strong> Tvoji podaci se čuvaju isključivo lokalno u tvom pregledaču (localStorage) i nigde se ne šalju na internet. 100% bezbedno za decu i odrasle.</span>
+            </div>
+          </div>
+
+          <!-- Desna kolona: Interaktivna forma ili kartica profila -->
+          <div class="profile-form-wrapper">
+            
+            <!-- AKO KORISNIK JOŠ NIJE REGISTROVAN: Prikazuje se forma -->
+            <div id="profile-registration-form-box" class="profile-box-view">
+              <div class="form-header">
+                <h4>✨ Napravi svoj besplatni profil</h4>
+                <p>Potrebno je manje od 60 sekundi</p>
+              </div>
+
+              <form id="user-registration-form" onsubmit="return false;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reg-email">E-mail adresa: <span class="req">*</span></label>
+                    <input type="email" id="reg-email" placeholder="npr. petar@primer.com" required autocomplete="email">
+                  </div>
+                  <div class="form-group">
+                    <label for="reg-username">Korisničko ime: <span class="req">*</span></label>
+                    <input type="text" id="reg-username" placeholder="npr. petar_py" required autocomplete="username">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reg-nickname">Nadimak (za diplome i ekran): <span class="req">*</span></label>
+                    <input type="text" id="reg-nickname" placeholder="npr. Peca Programer" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="reg-birthyear">Godina rođenja: <span class="req">*</span></label>
+                    <select id="reg-birthyear" required>
+                      <option value="">-- Izaberi godinu --</option>
+                      <!-- Generiše se u JS od 2018 do 1950 -->
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="reg-occupation">Čime se baviš / Zanimanje: <span class="req">*</span></label>
+                  <select id="reg-occupation" required>
+                    <option value="">-- Izaberi svoje zanimanje --</option>
+                    <option value="Učenik osnovne škole (11-14 god)">🎒 Učenik osnovne škole (11-14 god)</option>
+                    <option value="Srednjoškolac / Gimnazijalac (15-18 god)">🏫 Srednjoškolac / Gimnazijalac (15-18 god)</option>
+                    <option value="Student (fakultet / visoka škola)">🎓 Student (fakultet / visoka škola)</option>
+                    <option value="Zdravstvo / Medicina / Farmacija">🩺 Zdravstvo / Medicina / Farmacija</option>
+                    <option value="Prosveta / Nastavnik / Profesor">📚 Prosveta / Nastavnik / Profesor</option>
+                    <option value="Građevina / Arhitektura / Mašinstvo">🏗️ Građevina / Arhitektura / Mašinstvo</option>
+                    <option value="Ekonomija / Finansije / Bankarstvo">💼 Ekonomija / Finansije / Bankarstvo</option>
+                    <option value="Pravne nauke / Administracija">⚖️ Pravne nauke / Administracija</option>
+                    <option value="Umetnost / Dizajn / Muzika">🎨 Umetnost / Dizajn / Muzika</option>
+                    <option value="Penzioner / Zlatno doba">🛋️ Penzioner / Zlatno doba</option>
+                    <option value="Drugo zanimanje">🌟 Drugo zanimanje</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="reg-motivation">Zašto želiš da učiš programiranje? <span class="req">*</span></label>
+                  <select id="reg-motivation" required>
+                    <option value="">-- Izaberi svoj glavni razlog --</option>
+                    <option value="🚀 Promena profesije i prelazak u IT sektor">🚀 Promena profesije i prelazak u IT sektor</option>
+                    <option value="🎮 Želim da pravim sopstvene igrice i aplikacije">🎮 Želim da pravim sopstvene igrice i aplikacije</option>
+                    <option value="🎓 Priprema za školu, takmičenja ili ispit na fakultetu">🎓 Priprema za školu, takmičenja ili ispit na fakultetu</option>
+                    <option value="⚙️ Želim da automatizujem dosadne zadatke na trenutnom poslu">⚙️ Želim da automatizujem dosadne zadatke na trenutnom poslu</option>
+                    <option value="🧠 Radoznalost, mentalni fitnes i učenje novih veština">🧠 Radoznalost, mentalni fitnes i učenje novih veština</option>
+                    <option value="👶 Želim da razumem tehnologiju i pomognem svojoj deci">👶 Želim da razumem tehnologiju i pomognem svojoj deci</option>
+                  </select>
+                </div>
+
+                <button type="submit" id="btn-save-registration" class="btn btn-primary btn-block btn-lg" style="margin-top: 15px;">
+                  ✨ Kreiraj Profil i Započni Učenje!
+                </button>
+              </form>
+            </div>
+
+            <!-- AKO JE KORISNIK VEĆ REGISTROVAN: Prikazuje se Profilna Kartica -->
+            <div id="profile-display-card-box" class="profile-box-view" style="display: none;">
+              <div class="profile-hero-badge">
+                <div class="profile-avatar-large">👤</div>
+                <div class="profile-user-titles">
+                  <h3 id="card-user-nickname">Nadimak</h3>
+                  <p id="card-user-username">@korisnicko_ime</p>
+                  <span id="card-user-badge" class="profile-level-badge">🌱 Pythonista Početnik</span>
+                </div>
+              </div>
+
+              <div class="profile-details-grid">
+                <div class="profile-info-pill">
+                  <small>📧 E-mail:</small>
+                  <strong id="card-user-email">email@primer.com</strong>
+                </div>
+                <div class="profile-info-pill">
+                  <small>🎂 Godine:</small>
+                  <strong id="card-user-age">16 god (2008)</strong>
+                </div>
+                <div class="profile-info-pill">
+                  <small>💼 Zanimanje:</small>
+                  <strong id="card-user-occupation">Gimnazijalac</strong>
+                </div>
+                <div class="profile-info-pill">
+                  <small>🏆 Trijada Progres:</small>
+                  <strong id="card-user-progress">0 / 27 lekcija (0%)</strong>
+                </div>
+                <div class="profile-info-pill">
+                  <small>⚡ Sakupljeno XP:</small>
+                  <strong id="card-user-xp" style="color: #fbbf24;">0 XP</strong>
+                </div>
+                <div class="profile-info-pill">
+                  <small>🔥 Dnevni Niz (Streak):</small>
+                  <strong id="card-user-streak" style="color: #f87171;">1 dan</strong>
+                </div>
+              </div>
+
+              <div class="profile-motivation-quote">
+                <small>🎯 Moja lična misija za učenje:</small>
+                <p id="card-user-motivation">"Želim da pravim sopstvene igrice i aplikacije!"</p>
+              </div>
+
+              <div class="profile-card-actions">
+                <button id="btn-open-final-exam" class="btn btn-exam btn-block" style="margin-bottom: 10px;">
+                  🏆 Položi Završni Ispit Trijade (12 pitanja)
+                </button>
+                <button id="btn-open-certificate" class="btn btn-cert btn-block" style="margin-bottom: 12px;">
+                  🎓 Pregledaj Zvanični Sertifikat & Diplomu
+                </button>
+                <button id="btn-profile-continue-learning" class="btn btn-primary btn-block">
+                  ▶ Nastavi Tamo Gde Si Stao (Radionica)
+                </button>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                  <button id="btn-edit-profile" class="btn btn-secondary btn-sm" style="flex: 1;">
+                    ⚙️ Izmeni Podatke
+                  </button>
+                  <button id="btn-delete-profile" class="btn btn-ghost btn-sm" style="color: #ef4444;" title="Obriši profil sa ovog računara">
+                    🗑️ Obriši Profil
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+        <!-- 6. EKSPERTSKI TIM IZA PLATFORME -->
+    <section class="landing-section bg-alt" id="sekcija-tim">
+      <div class="landing-container">
+        <div class="section-header">
+          <span class="section-tag">👥 ELITNI EKSPERTSKI TIM</span>
+          <h2>Jedanaest vrhunskih stručnjaka koji vode i konstantno usavršavaju platformu</h2>
+          <p>Spoj višedecenijskog inženjerskog iskustva, univerzitetske didaktike, modernog dizajna, veštačke inteligencije, QA automatizacije, Git verzionisanja, pravne zaštite i video produkcije.</p>
+        </div>
+
+        <div class="team-grid">
+          <!-- 1. Vuk Bogdanović -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">💻</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">CTO & Lead Architect</span>
+            <h4>Vuk Bogdanović</h4>
+            <p class="team-bio">15+ godina iskustva kao Principal inženjer u globalnim sistemima. Zadužen za bezbednost, performanse i industrijske Python standarde.</p>
+          </div>
+
+          <!-- 2. Dr Lazar Petrović -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">🎓</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Chief Learning Officer</span>
+            <h4>Dr Lazar Petrović</h4>
+            <p class="team-bio">Univerzitetski profesor sa 20+ godina staža u računarskoj didaktici. Tvorac slikovitih mentalnih modela i nastavnih planova bez stresa.</p>
+          </div>
+
+          <!-- 3. Tara Kovačević -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">🎨</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">VP of Product Design</span>
+            <h4>Tara Kovačević</h4>
+            <p class="team-bio">Vodeća EdTech i UI/UX dizajnerka. Autorka modernog tamnog interfejsa, mikro-interakcija i vizuelne pristupačnosti za sve generacije.</p>
+          </div>
+
+          <!-- 4. Marko Jovanović -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">📈</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Chief Product Officer</span>
+            <h4>Marko Jovanović</h4>
+            <p class="team-bio">Stručnjak za rast proizvoda i monetizaciju. Zadužen za B2C pakete, analitiku angažovanja i održiv finansijski razvoj platforme.</p>
+          </div>
+
+          <!-- 5. Dr Maja Nikolić -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">🤖</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Head of AI & ML</span>
+            <h4>Dr Maja Nikolić</h4>
+            <p class="team-bio">Istraživačica u oblasti veštačke inteligencije. Razvija pametnog AI Mentora koji učenicima pomaže u kodu bez davanja gotovih rešenja.</p>
+          </div>
+
+          <!-- 6. Sofija Đorđević -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">📣</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Head of Community & Growth</span>
+            <h4>Sofija Đorđević</h4>
+            <p class="team-bio">Vodi zajednicu učenika, organizuje onlajn hakatone i kreira edukativne viralne formate za privlačenje novih mladih programera.</p>
+          </div>
+
+          <!-- 7. Nemanja Vasić -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">🏢</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Head of B2B & Partnerships</span>
+            <h4>Nemanja Vasić</h4>
+            <p class="team-bio">Povezuje platformu sa školama, gimnazijama, fakultetima i IT kompanijama koje stipendiraju i zapošljavaju naše najbolje diplomce.</p>
+          </div>
+
+          <!-- 8. Stefan Milić -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">🧪</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Head of QA & Testing</span>
+            <h4>Stefan Milić</h4>
+            <p class="team-bio">10+ godina u osiguranju kvaliteta i test automatizaciji. Testira platformu na svim uređajima, telefonima i ekstremnim korisničkim unosima.</p>
+          </div>
+
+          <!-- 9. Ana Ristić -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">⚖️</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Head of Legal & Compliance</span>
+            <h4>Ana Ristić</h4>
+            <p class="team-bio">Advokatica za IT pravo i zaštitu podataka o ličnosti (GDPR-K & COPPA). Zadužena za bezbednost dece, autorska prava i B2B školske ugovore.</p>
+          </div>
+
+          <!-- 10. Luka Radovanović -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">🎬</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Head of Multimedia & Video</span>
+            <h4>Luka Radovanović</h4>
+            <p class="team-bio">Kreativni video režiser i animator. Zadužen za vizuelne animacije algoritama, video produkciju naprednih kurseva i privlačne edukativne formate.</p>
+          </div>
+
+          <!-- 11. Đorđe Kostić -->
+          <div class="team-card">
+            <div class="team-avatar-box">
+              <span class="team-avatar-icon">🔀</span>
+              <span class="team-verified-check" title="Verifikovani stručnjak">✓</span>
+            </div>
+            <span class="team-role-badge">Git, Verzionisanje & Release Lead</span>
+            <h4>Đorđe Kostić</h4>
+            <p class="team-bio">Stručnjak za Git, strategiju grananja, CI/CD i release inženjerstvo. Brine o čistoj istoriji koda, .gitignore politici i sigurnim izdanjima bez regresija.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. UTISCI I ISKUSTVA POLAZNIKA (1.000 KORISNIKA) -->
+    <section class="landing-section" id="sekcija-utisci">
+      <div class="landing-container">
+        <div class="section-header">
+          <span class="section-tag">💬 PRIČE POLAZNIKA</span>
+          <h2>Od prvog koraka do samostalnog programiranja</h2>
+          <p>Evo šta kažu učenici, studenti i odrasli polaznici koji su učili kroz našu Trijadu Osnova:</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="t-header">
+              <span class="t-avatar">🎒</span>
+              <div>
+                <strong>Stefan (12 godina)</strong>
+                <small>Učenik 6. razreda osnovne škole</small>
+              </div>
+            </div>
+            <p>„Mislio sam da je programiranje dosadno kao zadaci iz zbirke. Na ovom sajtu sam prvo napravio strip a onda svog Tamagotchija! Najbolje je što sam ga skinuo preko tastera 'Preuzmi .py' i pokrenuo na tatinom laptopu!”</p>
+            <div class="t-stars">⭐⭐⭐⭐⭐</div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="t-header">
+              <span class="t-avatar">🩺</span>
+              <div>
+                <strong>Jelena (33 godine)</strong>
+                <small>Medicinska sestra, prekvalifikacija u IT</small>
+              </div>
+            </div>
+            <p>„Radim u smenama u bolnici i mislila sam da je kasno za mene. Tehnika Pomodoro od 25 minuta i metafore sa kutijama su mi otvorile oči. Sada bez straha pišem programe sa try-except i radim sa fajlovima!”</p>
+            <div class="t-stars">⭐⭐⭐⭐⭐</div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="t-header">
+              <span class="t-avatar">🏗️</span>
+              <div>
+                <strong>Milan (47 godina)</strong>
+                <small>Građevinski inženjer i preduzetnik</small>
+              </div>
+            </div>
+            <p>„Posle 20 godina u Excelu, želeo sam da automatizujem proračune materijala. Drugi kurs sa mini-projektima i treći sa modulom math i fajlovima dali su mi tačno ono što mi je trebalo za posao. Preporučujem svima!”</p>
+            <div class="t-stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. FOOTER POČETNE STRANE -->
+    <footer class="landing-footer">
+      <div class="landing-container footer-content">
+        <div class="footer-brand">
+          <span style="font-size: 2rem;">🐍</span>
+          <div>
+            <h3>Python Od Nule</h3>
+            <p>Interaktivna platforma za učenje programiranja • Trijada Osnova</p>
+          </div>
+        </div>
+        <div class="footer-links">
+          <button class="footer-link-btn" onclick="document.getElementById('sekcija-kursevi').scrollIntoView({behavior: 'smooth'})">Kursevi</button>
+          <button class="footer-link-btn" onclick="document.getElementById('sekcija-tehnike').scrollIntoView({behavior: 'smooth'})">Tehnike Učenja</button>
+          <button class="footer-link-btn" onclick="document.getElementById('sekcija-profil').scrollIntoView({behavior: 'smooth'})">Profil</button>
+          <button class="footer-link-btn" onclick="document.getElementById('sekcija-tim').scrollIntoView({behavior: 'smooth'})">Ekspertski Tim</button>
+          <button class="footer-link-btn" id="footer-btn-open-workshop">Otvori Radionicu</button>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Python Od Nule. Sva prava zadržana. Kreirano sa strašću za besplatno i kvalitetno obrazovanje.</p>
+      </div>
+    </footer>
+
+  </main>
+
+
+  <!-- Glavni radni prostor (Radionica) -->
+  <div id="view-workshop" class="app-layout view-panel">
+    
+    <!-- Bočni meni sa lekcijama -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        📚 Lekcije i Izazovi
+      </div>
+      <ul id="lesson-list" class="lesson-list">
+        <!-- Dinamički se puni iz lessons.js -->
+      </ul>
+    </aside>
+
+    <!-- Radni prostor (Dve kolone) -->
+    <main class="workspace">
+      
+      <!-- LEVA KOLONA: Objašnjenja i teorija -->
+      <section class="theory-panel" id="theory-panel">
+        <div class="lesson-header-meta">
+          <span id="lesson-category" class="badge-tag">Početni nivo</span>
+          <h2 id="lesson-title">1. Zdravo Svete! (Tvoj prvi program)</h2>
+        </div>
+
+        <!-- Video objašnjenje lekcije (YouTube ili lokalni MP4) -->
+        <div id="lesson-video-box" class="lesson-video-box" style="display: none;">
+          <button id="btn-toggle-lesson-video" class="video-toggle-bar" type="button">
+            <span>🎬 Video objašnjenje lekcije (Srpski audio • Full HD)</span>
+            <span id="video-toggle-arrow" class="video-toggle-arrow">▼ Prikaži video</span>
+          </button>
+          <div id="lesson-video-container" class="lesson-video-container" style="display: none;"></div>
+        </div>
+
+                <!-- Sadržaj lekcije -->
+        <article id="lesson-body" class="theory-content">
+          <!-- Dinamički sadržaj -->
+        </article>
+
+        <!-- Pro Tip za iskusnije -->
+        <div id="pro-tip-box" class="pro-tip-box" style="display: none;">
+          <!-- Dinamički Pro Tip -->
+        </div>
+
+        <!-- Izazov / Probaj sam -->
+        <div id="challenge-box" class="challenge-box" style="display: none;">
+          <!-- Dinamički izazov -->
+        </div>
+
+        <!-- Kviz -->
+        <div id="quiz-box" class="quiz-box" style="display: none;">
+          <!-- Dinamički kviz -->
+        </div>
+
+        <!-- Navigacija na dnu lekcije -->
+        <div class="lesson-footer-nav">
+          <button id="prev-lesson-btn" class="btn btn-secondary">
+            ← Prethodna lekcija
+          </button>
+          
+          <button id="complete-lesson-btn" class="btn btn-done">
+            <span>🎯 Označi lekciju kao završenu</span>
+          </button>
+
+          <button id="next-lesson-btn" class="btn btn-primary">
+            Sledeća lekcija →
+          </button>
+        </div>
+      </section>
+
+      <!-- DESNA KOLONA: Editor i Interaktivna konzola -->
+      <!-- Razdvajač panela (Vertikalni resizer: Teorija <-> Editor) -->
+      <div class="panel-resizer vertical-resizer" id="workspace-column-resizer" title="Povuci levo ili desno da podesiš širinu objašnjenja i editora (Dvoklik za reset)">
+        <div class="resizer-handle-line"></div>
+      </div>
+
+      <!-- DESNA KOLONA: Editor i Interaktivna konzola -->
+      <section class="editor-panel" id="editor-panel">
+        
+        <!-- Toolbar editora -->
+        <div class="editor-toolbar">
+          <div class="toolbar-left">
+            <button id="focus-mode-btn" class="btn btn-ghost btn-xs" title="Fokus mod: Sakrij/prikaži levu listu lekcija za više prostora">
+              ◀ Lekcije
+            </button>
+            <span class="editor-label">🐍 Editor</span>
+            <span id="editor-mode-badge" class="editor-mode-badge mode-demo" title="Trenutno učitani kod u editoru">📘 Primer lekcije</span>
+            <!-- Kontrola veličine slova (za pristupačnost i komfor) -->
+            <div class="font-zoom-controls" title="Podesi veličinu slova u editoru">
+              <button id="font-dec-btn" class="btn btn-ghost btn-xs" aria-label="Smanji slova" title="Smanji slova">A-</button>
+              <span id="font-size-indicator" class="font-size-text">14px</span>
+              <button id="font-inc-btn" class="btn btn-ghost btn-xs" aria-label="Povećaj slova" title="Povećaj slova">A+</button>
+            </div>
+          </div>
+          <div class="toolbar-right">
+            <button id="cheat-sheet-btn" class="btn btn-ghost btn-sm" title="Brzi Python podsetnik i rečnik pojmova">
+              📖 Podsetnik
+            </button>
+            <button id="download-code-btn" class="btn btn-ghost btn-sm" title="Preuzmi svoj kod kao .py fajl na računar">
+              💾 Preuzmi .py
+            </button>
+            <button id="reset-code-btn" class="btn btn-ghost btn-sm" title="Vrati kod na početno stanje lekcije">
+              🔄 Resetuj kod
+            </button>
+            <button id="run-code-btn" class="btn btn-run">
+              ▶ Pokreni kod <small style="opacity: 0.8; font-size: 0.75rem; margin-left: 4px;">(Ctrl+Enter)</small>
+            </button>
+            <button id="stop-code-btn" class="btn btn-stop btn-sm" style="display: none;" title="Zaustavi izvršavanje">
+              ⏹ Prekini
+            </button>
+          </div>
+        </div>
+
+        <!-- CodeMirror Editor polje -->
+        <div class="editor-wrapper" id="editor-wrapper">
+          <textarea id="code-editor"></textarea>
+        </div>
+
+        <!-- Terminal / Izlaz -->
+        <!-- Razdvajač panela (Horizontalni resizer: Editor <-> Terminal) -->
+        <div class="panel-resizer horizontal-resizer" id="editor-terminal-resizer" title="Povuci gore ili dole da podesiš visinu editora i terminala (Dvoklik za reset)">
+          <div class="resizer-handle-line horizontal"></div>
+        </div>
+
+        <!-- Terminal / Izlaz -->
+        <div class="terminal-wrapper" id="terminal-wrapper">
+          <div class="terminal-header">
+            <div class="terminal-title">
+              <div class="terminal-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="terminal-tabs">
+                <button id="tab-terminal-btn" class="term-tab-btn active" title="Prikaži konzolni izlaz">📟 Terminal</button>
+                <button id="tab-files-btn" class="term-tab-btn" title="Pregled fajlova koje je tvoj Python kod kreirao">📂 Moji fajlovi <span id="vfs-count-badge" class="vfs-badge">0</span></button>
+              </div>
+            </div>
+            <div class="terminal-actions">
+              <button id="copy-terminal-btn" class="btn btn-ghost btn-sm" style="font-size: 0.75rem; padding: 2px 6px;" title="Kopiraj izlaz konzole u clipboard">
+                📋 Kopiraj
+              </button>
+              <button id="clear-console-btn" class="btn btn-ghost btn-sm" style="font-size: 0.75rem; padding: 2px 6px;" title="Očisti terminal">
+                🧹 Očisti
+              </button>
+            </div>
+          </div>
+          <div id="vfs-explorer" class="vfs-explorer" style="display: none;">
+            <div class="vfs-empty-state">Još nisi kreirao nijedan fajl. Pokreni kod sa <code>open("fajl.txt", "w")</code> i ovde će se odmah pojaviti!</div>
+          </div>
+          <div id="console-output" class="terminal-output">
+            <span class="console-placeholder">Klikni na dugme "▶ Pokreni kod" iznad da vidiš rezultat ovde...</span>
+          </div>
+          <!-- Inline unos direktno u terminalu (nikada ne zaklanja rezultat!) -->
+          <div id="inline-terminal-input-bar" class="inline-terminal-input-bar" style="display: none;">
+            <span class="inline-prompt-arrow" title="Python čeka tvoj unos">⌨️ ❯</span>
+            <input type="text" id="inline-terminal-input" class="inline-terminal-input" placeholder="Ukucaj odgovor ovde i pritisni Enter..." autocomplete="off">
+            <button id="inline-terminal-submit" class="btn btn-primary btn-xs" type="button">Pošalji ↵</button>
+            <button id="inline-terminal-cancel" class="btn btn-ghost btn-xs" type="button" title="Otkaži unos (Esc)">✕</button>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Prilagođeni modal za interaktivni Python input() -->
+  <div id="custom-input-modal" class="custom-modal-backdrop">
+    <div class="custom-modal-card">
+      <div class="modal-header">
+        <h4>⌨️ Python čeka tvoj unos:</h4>
+      </div>
+      <p id="custom-input-prompt" class="modal-prompt-text">Unesi vrednost:</p>
+      <input type="text" id="custom-input-field" class="modal-input-field" placeholder="Ukucaj odgovor ovde i pritisni Enter..." autocomplete="off">
+      <div class="modal-actions">
+        <button id="custom-input-cancel" class="btn btn-secondary btn-sm" style="margin-right: 8px;">✕ Otkaži</button>
+        <button id="custom-input-submit" class="btn btn-primary">Pošalji računaru (Enter)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal za Brzi Podsetnik (Cheat Sheet & Rečnik) -->
+  <div id="cheat-sheet-modal" class="custom-modal-backdrop" style="display: none;">
+    <div class="cheat-sheet-card">
+      <div class="cheat-sheet-header">
+        <div class="cheat-sheet-title">
+          <span style="font-size: 1.5rem;">📖</span>
+          <div>
+            <h3>Brzi Podsetnik Pythona & Rečnik Pojmova</h3>
+            <p>Tvoja sigurna pomoćna stanica — sve komande Trijade Osnova na jednom mestu</p>
+          </div>
+        </div>
+        <button id="close-cheat-sheet-btn" class="modal-close-x" aria-label="Zatvori podsetnik">✕</button>
+      </div>
+
+      <div class="cheat-sheet-controls">
+        <input type="text" id="cheat-sheet-search" placeholder="🔍 Pretraži komandu ili pojam (npr. print, append, if, scope, fajl, petlja)..." autocomplete="off">
+        <div class="cheat-sheet-filter-tabs">
+          <button class="cs-tab-btn active" data-cat="all">🌟 Sve</button>
+          <button class="cs-tab-btn" data-cat="k1">🌱 Kurs 1 (Početni)</button>
+          <button class="cs-tab-btn" data-cat="k2">🛠️ Kurs 2 (Praktičar)</button>
+          <button class="cs-tab-btn" data-cat="k3">🎓 Kurs 3 (Master)</button>
+          <button class="cs-tab-btn" data-cat="recnik">🧠 Rečnik Pojmova</button>
+        </div>
+      </div>
+
+      <div id="cheat-sheet-grid" class="cheat-sheet-grid">
+        <!-- Dinamički se generiše ili statički renderuje -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifikacija -->
+  <div id="notification-toast" class="notification-toast">
+    <span>🎉</span> <span>Bravo!</span>
+  </div>
+
+  <!-- Konfete za slavlje uspeha -->
+  <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+  <!-- Skripte -->
+  <script src="assets/vendor/codemirror.min.js"></script>
+  <script src="assets/vendor/python.min.js"></script>
+  <script src="assets/vendor/skulpt.min.js"></script>
+  <script src="assets/vendor/skulpt-stdlib.js"></script>
+  
+  <script src="assets/js/course_bridge.js"></script>
+  <script src="assets/js/course_projects.js"></script>
+  <script src="assets/js/course4_cs101.js"></script>
+  <script src="assets/js/lessons.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ZVANIČNI DIGITALNI SERTIFIKAT I DIPLOMA -->
+  <!-- ========================================================================= -->
+  <div id="certificate-modal" class="custom-modal-backdrop" style="display: none;">
+    <div class="certificate-modal-content">
+      <div class="certificate-modal-top-bar no-print">
+        <span class="cert-modal-tag">🎓 ZVANIČNI DOKUMENT O ZAVRŠENIM OSNOVAMA</span>
+        <div class="cert-modal-btns">
+          <button id="btn-print-certificate" class="btn btn-primary btn-sm">🖨️ Odštampaj / Snimi kao PDF</button>
+          <button id="btn-copy-cert-id" class="btn btn-secondary btn-sm">📋 Kopiraj ID</button>
+          <button id="btn-close-certificate" class="modal-close-x" aria-label="Zatvori sertifikat">✕</button>
+        </div>
+      </div>
+
+      <!-- SAM SERTIFIKAT KOJI SE ŠTAMPA -->
+      <div class="certificate-paper" id="printable-certificate">
+        <div class="cert-outer-border">
+          <div class="cert-inner-border">
+            <div class="cert-watermark">PYTHON</div>
+            
+            <div class="cert-header">
+              <div class="cert-logo">🐍</div>
+              <h2>AKADEMIJA PROGRAMIRANJA „PYTHON OD NULE”</h2>
+              <span class="cert-subtitle">CENTAR ZA RAČUNARSKU DIDAKTIKU I EKSPERTSKO OBRAZOVANJE</span>
+            </div>
+
+            <div class="cert-ribbon-title">
+              <span>POHVALNICA I ZVANIČNI SERTIFIKAT</span>
+            </div>
+
+            <p class="cert-prose">Ovim se svečano potvrđuje i verifikuje da je polaznik</p>
+            <h3 class="cert-recipient" id="cert-student-name">Marko Petrović</h3>
+            
+            <p class="cert-prose">uspešno savladao/la nastavni program i praktične projekte na modulu</p>
+            <h4 class="cert-course-title" id="cert-course-name">Trijada Osnova Python Programiranja (27/27 Lekcija)</h4>
+
+            <div class="cert-skills-badge">
+              <span>Sintaksa & Tipovi</span> • <span>Algoritamske Petlje</span> • <span>Funkcije & Rečnici</span> • <span>Rad sa Fajlovima & Izuzeci</span>
+            </div>
+
+            <div class="cert-footer">
+              <div class="cert-sig-block">
+                <div class="cert-signature-line">Vuk Bogdanović</div>
+                <span class="cert-sig-role">Vuk Bogdanović, Principal Architect<br>Chief Technology Officer</span>
+              </div>
+
+              <div class="cert-seal-block">
+                <div class="cert-gold-seal">
+                  <span>★ VERIFIKOVANO ★</span>
+                  <strong id="cert-seal-year">2026</strong>
+                  <small>EXCELLENCE</small>
+                </div>
+                <div class="cert-serial-box">
+                  <span class="cert-id-label">Kriptografski ID:</span>
+                  <strong class="cert-id-code" id="cert-serial-number">PON-2026-X89F-71A2</strong>
+                </div>
+              </div>
+
+              <div class="cert-sig-block">
+                <div class="cert-signature-line">Dr Lazar Petrović</div>
+                <span class="cert-sig-role">Dr Lazar Petrović, Prof. Didaktike<br>Chief Learning Officer</span>
+              </div>
+            </div>
+
+            <div class="cert-date-line">
+              Izdata u Beogradu, dana <span id="cert-issue-date">7. novembar 2026.</span> godine.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ZAVRŠNI ISPIT TRIJADE (12 PITANJA IZ SVA 3 KURSA)                  -->
+  <!-- ========================================================================= -->
+  <div id="final-exam-modal" class="custom-modal-backdrop" style="display: none;">
+    <div class="exam-modal-card">
+      <div class="exam-modal-header">
+        <div>
+          <span class="exam-tag">🏆 ZVANIČNA PROVERA ZNANJA TRIJADE</span>
+          <h3>Završni Ispit: Osnove Python Programiranja</h3>
+          <p class="exam-sub">Odgovori tačno na najmanje <strong>9 od 12 pitanja (75%)</strong> da otključaš Zvanični Verifikovani Sertifikat!</p>
+        </div>
+        <button id="btn-close-final-exam" class="modal-close-x" aria-label="Zatvori ispit">✕</button>
+      </div>
+      <div id="final-exam-body" class="exam-modal-body">
+        <!-- Dinamički se generiše iz app.js -->
+      </div>
+      <div class="exam-modal-footer">
+        <div id="final-exam-status" class="exam-status-text">Odgovoreno: 0 / 12</div>
+        <div style="display: flex; gap: 10px;">
+          <button id="btn-reset-final-exam" class="btn btn-secondary btn-sm">🔄 Pokušaj ponovo</button>
+          <button id="btn-submit-final-exam" class="btn btn-primary">✅ Predaj ispit i proveri rezultat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ULAZNI TEST (PLACEMENT TEST — 6 PITANJA ZA PREPORUKU KURSA)        -->
+  <!-- ========================================================================= -->
+  <div id="placement-test-modal" class="custom-modal-backdrop" style="display: none;">
+    <div class="exam-modal-card">
+      <div class="exam-modal-header">
+        <div>
+          <span class="exam-tag">🧭 DETALJNA DIJAGNOSTIKA ZNANJA (18 PITANJA • 3 NIVOA)</span>
+          <h3>Ulazni Test: Od kog kursa da kreneš?</h3>
+          <p class="exam-sub">Test sadrži po 6 pitanja iz svakog kursa (Osnove, Praktičar, Master). Ako nešto ne znaš, slobodno izaberi „Ne znam još” — dobićeš precizan profil znanja!</p>
+        </div>
+        <button id="btn-close-placement-test" class="modal-close-x" aria-label="Zatvori ulazni test">✕</button>
+      </div>
+      <div id="placement-test-body" class="exam-modal-body">
+        <!-- Dinamički iz app.js -->
+      </div>
+      <div class="exam-modal-footer">
+        <div id="placement-test-status" class="exam-status-text">Odgovoreno: 0 / 18</div>
+        <div style="display: flex; gap: 10px;">
+          <button id="btn-reset-placement-test" class="btn btn-secondary btn-sm" type="button">🔄 Ponovo</button>
+          <button id="btn-submit-placement-test" class="btn btn-primary" type="button">🎯 Prikaži preporuku kursa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Plutajuće dugme za povratak na vrh (Početna strana) -->
+  <button id="btn-scroll-top" class="btn-scroll-top" title="Nazad na vrh stranice" aria-label="Nazad na vrh">↑</button>
+
+</body>
+</html>
