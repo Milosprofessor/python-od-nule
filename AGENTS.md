@@ -2,7 +2,7 @@
 
 ## 1. Jezik i Standard Tima
 - Sva komunikacija, UI tekstovi, objašnjenja grešaka i komentari za učenike pišu se na **srpskom jeziku (latinica)**.
-- Održavati standard našeg jedanaestočlanog ekspertskog tima (Vuk, Dr Lazar, Tara, Marko, Dr Maja, Sofija, Nemanja, Stefan, Ana, Luka, Đorđe).
+- Održavati standard našeg dvanaestočlanog ekspertskog tima (Vuk, Dr Lazar, Tara, Marko, Dr Maja, Sofija, Nemanja, Stefan, Ana, Luka, Đorđe, Ivana).
 
 ## 2. Obavezna QA Provera Posle Svake Izmene (Stefan & Vuk)
 - Nakon svake izmene u `assets/js/app.js`, `assets/js/lessons.js` ili `assets/css/style.css`, OBAVEZNO pokrenuti:
@@ -31,3 +31,13 @@
 - Nakon svake veće verifikovane izmene (pošto prođe `python3 scripts/qa_verify_all.py`), napraviti uredan, atomski commit sa jasnom konvencionalnom porukom na srpskom (`feat:`, `fix:`, `style:`, `docs:`, `chore:`).
 - Veliki binarni video fajlovi (`video_lekcije/*.mp4`), keš (`__pycache__/`) i privremeni fajlovi ostaju u `.gitignore` kako bi repozitorijum bio lagan i spreman za GitHub / Deploy.
 - Nikada ne raditi `git push` na udaljeni repozitorijum niti destruktivne operacije (`git reset --hard`, `git push --force`) bez izričitog zahteva korisnika.
+
+
+## 7. Standardi Savremene Web/EdTech Platforme (Ivana Marković — Platform Standards Lead)
+- Ivana proaktivno kontroliše da platforma u svakom trenutku ispunjava moderne industrijske standarde (da se nikada više ne desi propust poput naknadnog uvođenja Git-a).
+- Pre svakog većeg izdanja (release-a) obavezno proveriti:
+  1. **Verzionisanje & Dokumentacija:** Git repozitorijum čist, `README.md` usklađen sa aktuelnim brojem kurseva/lekcija, `.gitignore` štiti teške binarne fajlove.
+  2. **SEO, Deljenje & PWA:** Prisutni `<meta name="description">`, Open Graph (`og:title`, `og:description`, `og:url`), `<meta name="theme-color">` i `manifest.webmanifest`.
+  3. **Kredibilitet & Pravo:** Bez lažnih biografija/utisaka i neosnovanih tvrdnji o akreditaciji na javnom sajtu.
+  4. **Mobilni & Desktop UX:** Odmrznuto zaglavlje i 0 horizontalnog prelivanja na 360px/390px/768px/1440px, 100% podrška za Tamnu i Svetlu temu, tastaturni `:focus-visible` i `prefers-reduced-motion`.
+  5. **Kvalitet Koda & Testovi:** 100% prolaz na `python3 scripts/qa_verify_all.py` i provera svih unit testova u Skulpt okruženju.

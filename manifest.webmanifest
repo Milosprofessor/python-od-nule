@@ -1,0 +1,10 @@
+{
+  "name": "Python Od Nule — Interaktivna Platforma",
+  "short_name": "Python Od Nule",
+  "description": "Besplatna interaktivna platforma za učenje Python programiranja na srpskom jeziku — 6 kurseva, 53 lekcije i projekta, ugrađen Python editor.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "sr"
+}
