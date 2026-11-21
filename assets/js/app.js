@@ -1407,6 +1407,9 @@ function loadLesson(index) {
   elements.nextLessonBtn.disabled = (index === currentLessons.length - 1);
 
   updateProgressUI();
+  if (typeof mobileTabScrollY !== 'undefined') {
+    mobileTabScrollY.theory = 0;
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -4514,11 +4517,20 @@ function initHeroDemoEditor() {
 // ============================================================================
 // MOBILNI TABOVI U RADIONICI (Samo za telefone i tablete <= 900px)
 // ============================================================================
-function setMobileWorkshopTab(tabName) {
+let currentMobileWorkshopTab = 'theory';
+const mobileTabScrollY = { theory: 0, editor: 0, lessons: 0 };
+
+function setMobileWorkshopTab(tabName, options = {}) {
   const workshopEl = document.getElementById('view-workshop');
   const btns = document.querySelectorAll('#mobile-workshop-tabs .mwt-btn');
   if (!workshopEl) return;
 
+  // Sačuvaj trenutnu poziciju skrola pre prelaska na drugi tab
+  if (window.innerWidth <= 900 && currentMobileWorkshopTab !== tabName) {
+    mobileTabScrollY[currentMobileWorkshopTab] = window.scrollY || window.pageYOffset || 0;
+  }
+
+  currentMobileWorkshopTab = tabName;
   workshopEl.classList.remove('mobile-tab-theory', 'mobile-tab-editor', 'mobile-tab-lessons');
   workshopEl.classList.add(`mobile-tab-${tabName}`);
 
@@ -4530,14 +4542,23 @@ function setMobileWorkshopTab(tabName) {
     setTimeout(() => editor.refresh(), 40);
   }
 
-  // Na telefonu skroluj početak tab-trake u fokus da korisnik dobije pun ekran za rad
   if (window.innerWidth <= 900) {
     const tabBar = document.getElementById('mobile-workshop-tabs');
-    if (tabBar) {
-      const rect = tabBar.getBoundingClientRect();
-      if (rect.top < 0 || rect.top > 180) {
-        tabBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    const tabBarTop = tabBar ? (tabBar.offsetTop || 0) : 0;
+
+    if (options.resetScroll) {
+      mobileTabScrollY[tabName] = tabBarTop;
+      requestAnimationFrame(() => window.scrollTo(0, tabBarTop));
+    } else if (tabName === 'theory' && mobileTabScrollY.theory > 0) {
+      // Vrati učenika tačno na pasus / zadatak gde je bio u lekciji!
+      const targetY = mobileTabScrollY.theory;
+      requestAnimationFrame(() => window.scrollTo(0, targetY));
+    } else if (tabName === 'editor') {
+      // Editor uvek prikaži čisto od vrha toolbara
+      requestAnimationFrame(() => window.scrollTo(0, tabBarTop));
+    } else if (tabName === 'lessons') {
+      const targetY = mobileTabScrollY.lessons > 0 ? mobileTabScrollY.lessons : tabBarTop;
+      requestAnimationFrame(() => window.scrollTo(0, targetY));
     }
   }
 }
@@ -4552,12 +4573,12 @@ function initMobileWorkshopTabs() {
     });
   });
 
-  // Automatski prebaci na "Lekcija" kad se klikne lekcija iz spiska na telefonu
+  // Kada se klikne nova lekcija iz spiska na telefonu, otvori je od početka
   const lessonList = document.getElementById('lesson-list');
   if (lessonList) {
     lessonList.addEventListener('click', (e) => {
       if (window.innerWidth <= 900 && e.target.closest('.lesson-item')) {
-        setMobileWorkshopTab('theory');
+        setMobileWorkshopTab('theory', { resetScroll: true });
       }
     });
   }
